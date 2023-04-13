@@ -1,0 +1,83 @@
+plugins {
+	id 'fabric-loom' version '1.0-SNAPSHOT'
+}
+
+archivesBaseName = "${mod_name}-fabric"
+def mainArtifactFile = new File(new File(buildDir, 'libs'), "$archivesBaseName-${version}.jar")
+
+repositories {
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:${minecraft_version}"
+	mappings loom.officialMojangMappings()
+
+	def fabricLoaderDependency = "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
+	modImplementation fabricLoaderDependency
+
+	def fabricApiDependency = "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+	modImplementation fabricApiDependency
+
+	compileOnly project(":common")
+}
+
+loom {
+	runs {
+		client {
+			client()
+			setConfigName("Fabric Client")
+			ideConfigGenerated(true)
+			runDir("run")
+		}
+		server {
+			server()
+			setConfigName("Fabric Server")
+			ideConfigGenerated(true)
+			runDir("run")
+		}
+		datagenClient {
+			inherit client
+			name 'Data Generation'
+			vmArg '-Dfabric-api.datagen'
+			vmArg "-Dfabric-api.datagen.output-dir=${file('../common/src/main/generated')}"
+			vmArg '-Dfabric-api.datagen.strict-validation'
+
+			runDir "build/datagen"
+		}
+	}
+}
+
+processResources {
+	from project(':common').sourceSets.main.resources
+	inputs.property 'version', project.version
+
+	def buildProps = project.properties.clone()
+
+	filesMatching('*.mixins.json') {
+		expand "refmap_target": "${archivesBaseName}-"
+	}
+
+	filesMatching(['**/*.json', 'pack.mcmeta']) {
+		expand buildProps
+	}
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+	archiveClassifier.set('sources')
+	from project(':common').sourceSets.main.allSource
+	from sourceSets.main.allSource
+}
+
+javadoc {
+	source project(':common').sourceSets.main.allJava
+	source sourceSets.main.allJava
+}
+
+java {
+	withSourcesJar()
+	withJavadocJar()
+}
+
+compileJava {
+	source project(':common').sourceSets.main.allSource
+}

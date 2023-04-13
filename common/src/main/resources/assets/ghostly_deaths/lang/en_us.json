@@ -1,0 +1,12 @@
+{
+  "block.ghostly_deaths.grave_shrine": "Grave Shrine",
+  "subtitles.ghostly_ghost_sfx": "Player rises as a ghost",
+  "death.attack.ghost_expiration": "Your ghostly form expired!",
+  "config.ghostly_deaths.ghostly_deaths_configuration": "ghostly-deaths",
+  "subtitles.ghostly_reincarnate_sfx": "Player reincarnates",
+  "effect.ghostly_deaths.ghostly": "Ghostly",
+  "item.ghostly_deaths.ghostly_menu_item": "Ghostly Menu",
+  "gui.ghostly_deaths.ghostly_menu.button_keep_trying": "Keep Trying!",
+  "gui.ghostly_deaths.ghostly_menu.label_too_soon_to_give_up": "Too Soon To Give Up!",
+  "gui.ghostly_deaths.ghostly_menu.button_give_up_ghost_form": "Give Up Ghost Form"
+}

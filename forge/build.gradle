@@ -1,0 +1,125 @@
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net' }
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath 'org.spongepowered:mixingradle:0.7.+'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'java-library'
+}
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.spongepowered.mixin'
+
+archivesBaseName = "${mod_name}-forge"
+def mainArtifactFile = new File(new File(buildDir, 'libs'), "$archivesBaseName-${version}.jar")
+
+sourceSets {
+    main {}
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    annotationProcessor "org.spongepowered:mixin:${project.forge_mixin_version}:processor"
+    compileOnly project(":common")
+}
+
+minecraft {
+    mappings channel: 'official', version: minecraft_version
+    
+    runs {
+        client {
+            workingDirectory project.file('run')
+            ideaModule "${rootProject.name}.${project.name}.main"
+            taskName 'Client'
+            mods {
+                modClientRun {
+                    source sourceSets.main
+                    source project(":common").sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+            ideaModule "${rootProject.name}.${project.name}.main"
+            taskName 'Server'
+            mods {
+                modServerRun {
+                    source sourceSets.main
+                    source project(":common").sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run')
+            ideaModule "${rootProject.name}.${project.name}.main"
+            args '--mod', mod_name, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            taskName 'Data'
+            mods {
+                modDataRun {
+                    source sourceSets.main
+                    source project(":common").sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+//sourceSets.main.resources.srcDir 'src/generated/resources'
+//processResources {
+//    //from project(":common").sourceSets.main.resources
+//    def buildProps = project.properties.clone()
+//
+//    filesMatching('*.mixins.json') {
+////        expand "refmap_target": "${mod_id}."
+////    }
+//
+//    filesMatching(['**/*.json', 'pack.mcmeta', '**/mods.toml']) {
+//        expand buildProps
+//    }
+//}
+
+processResources {
+    from project(':common').sourceSets.main.resources
+    //inputs.property 'version', project.version
+
+    def buildProps = project.properties.clone()
+
+    filesMatching('*.mixins.json') {
+        expand "refmap_target": "${mod_name}."
+    }
+
+    filesMatching(['**/*.json', 'pack.mcmeta', '**/mods.toml']) {
+        expand buildProps
+    }
+}
+
+jar.finalizedBy('reobfJar')
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    archiveClassifier.set('sources')
+    from project(':common').sourceSets.main.allSource
+    from sourceSets.main.allSource
+}
+
+javadoc {
+    source project(':common').sourceSets.main.allJava
+    source sourceSets.main.allJava
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+compileJava {
+    source project(':common').sourceSets.main.allSource
+}

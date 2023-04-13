@@ -1,0 +1,12 @@
+{
+  "parent": "ghostly_deaths:custom/grave_shrine",
+  "textures": {
+    "all": "ghostly_deaths:blocks/grave_shrine_base",
+    "particle": "hostly_deaths:blocks/grave_shrine_base",
+    "feather": "ghostly_deaths:blocks/feather",
+    "grave_shrine_base": "ghostly_deaths:blocks/grave_shrine_base",
+    "secondary_limb": "ghostly_deaths:blocks/secondary_limb",
+    "main_limb": "ghostly_deaths:blocks/main_limb"
+  },
+  "render_type": "solid"
+}

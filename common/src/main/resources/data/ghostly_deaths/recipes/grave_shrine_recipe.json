@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " 1 ",
+    "345"
+  ],
+  "key": {
+    "1": {
+      "item": "minecraft:totem_of_undying"
+    },
+    "3": {
+      "tag": "minecraft:stone_bricks"
+    },
+    "4": {
+      "tag": "minecraft:stone_bricks"
+    },
+    "5": {
+      "tag": "minecraft:stone_bricks"
+    }
+  },
+  "result": {
+    "item": "ghostly_deaths:grave_shrine",
+    "count": 1
+  }
+}

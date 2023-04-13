@@ -1,0 +1,22 @@
+{
+  "ghostly_reincarnate_sfx": {
+    "category": "player",
+    "subtitle": "subtitles.ghostly_reincarnate_sfx",
+    "sounds": [
+      {
+        "name": "ghostly_deaths:bone-crack-121580",
+        "stream": false
+      }
+    ]
+  },
+  "ghostly_ghost_sfx": {
+    "category": "player",
+    "subtitle": "subtitles.ghostly_ghost_sfx",
+    "sounds": [
+      {
+        "name": "ghostly_deaths:cinematic-scary-riser-142324",
+        "stream": false
+      }
+    ]
+  }
+}
